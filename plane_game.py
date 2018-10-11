@@ -28,13 +28,21 @@ class PlaneGame:
 
     # Supplies
     __bomb = None
+    __bomb_group = None
 
     # Sounds
     __se = dict()
 
+    # Text
+    __bomb_text = None
+
     def __init__(self):
         self.__screen = pygame.display.set_mode((BACKGROUND_SIZE_X, BACKGROUND_SIZE_Y))
+
+        # Initiate
         pygame.mixer.init()
+        pygame.font.init()
+
         self.__clock = pygame.time.Clock()
         self.__create_sprites()
         self.__load_sound()
@@ -54,8 +62,10 @@ class PlaneGame:
         self.__enemy_group = pygame.sprite.Group()
         self.__enemy_missile_group = pygame.sprite.Group()
 
-        # Create bomb sprite
+        # Create bomb sprite group
         self.__bomb = Bomb()
+        self.__bomb_text = self.__bomb.get_text()
+        self.__bomb_group = pygame.sprite.Group(self.__bomb)
 
     def __load_sound(self):
         self.__load_se()
@@ -94,9 +104,14 @@ class PlaneGame:
 
             # Use bomb
             elif event.type == KEYDOWN and event.key == K_b:
-                self.__enemy_missile_group.empty()
-                for sprite in self.__enemy_group.sprites():
-                    sprite.hp = 0
+                if self.__bomb.get_remains() > 0:
+                    self.__enemy_missile_group.empty()
+                    for sprite in self.__enemy_group.sprites():
+                        sprite.hp = 0
+                    self.__bomb.subtract()
+                else:
+                    # todo add sound effect
+                    pass
 
             # Game over
             elif event.type == GAME_OVER_EVENT:
@@ -111,6 +126,8 @@ class PlaneGame:
                 self.__se["ENEMY_MEDIUM_EXPLODE_SOUND"].play()
             elif event.type == ENEMY_LARGE_EXPLODE_EVENT:
                 self.__se["ENEMY_LARGE_EXPLODE_SOUND"].play()
+            elif event.type == PLAYER_EXPLODE_EVENT:
+                self.__se["PLAYER_EXPLODE_SOUND"].play()
             elif event.type == PLAYER_SHOOT_EVENT:
                 self.__se["PLAYER_SHOOT_SOUND"].set_volume(PLAYER_SHOOT_SE_VOLUME)
                 self.__se["PLAYER_SHOOT_SOUND"].play()
@@ -152,8 +169,8 @@ class PlaneGame:
             # Check if an enemy collide with the player
             if self.__player.explode_timer == PLAYER_EXPLODE_TIMER and sprite.hp > 0 and \
                     player_mask.overlap(enemy_mask, (sprite.rect.x-self.__player.rect.x, sprite.rect.y-self.__player.rect.y)) is not None:
-                self.__player.explode_timer -= 1
-                sprite.explode_timer -= 1
+                self.__player.hp = 0
+                sprite.hp = 0
 
             # Check if a player missile hit an enemy
             for missile in self.__player.missile_group.sprites():
@@ -167,7 +184,7 @@ class PlaneGame:
             missile_mask = pygame.mask.from_surface(missile.image)
             if self.__player.explode_timer == PLAYER_EXPLODE_TIMER and \
                     missile_mask.overlap(player_mask, (self.__player.rect.x-missile.rect.x, self.__player.rect.y-missile.rect.y)) is not None:
-                self.__player.explode_timer -= 1
+                self.__player.hp -= missile.attack
                 missile.kill()
 
     def __update_sprites(self):
@@ -195,12 +212,20 @@ class PlaneGame:
         self.__player_group.update()
         self.__player_group.draw(self.__screen)
 
+        # Update remaining bombs
+        self.__bomb_group.update()
+        self.__bomb_group.draw(self.__screen)
+
         # Fire cooling down
         if self.__player.cool_down_timer > 0:
             self.__player.cool_down_timer -= 1
         for sprite in self.__enemy_group.sprites():
             if sprite.cool_down_timer > 0:
                 sprite.cool_down_timer -= 1
+
+    def __update_text(self):
+        self.__bomb_text = self.__bomb.get_text()
+        self.__screen.blit(self.__bomb_text, (self.__bomb.rect.right + 20, self.__bomb.rect.top + 5))
 
     def start_game(self):
         pygame.init()
@@ -214,6 +239,8 @@ class PlaneGame:
             self.__collision_detection()
             # Redraw
             self.__update_sprites()
+            # Update text
+            self.__update_text()
             # Update display
             pygame.display.update()
 

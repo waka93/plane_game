@@ -34,7 +34,9 @@ class Player(GameSprite):
         self.rect.y -= self.direction[1] * self.speed
         self.rect.y = max(self.rect.y, 0-PLAYER_IMAGE_EDGE)
         self.rect.y = min(self.rect.y, BACKGROUND_SIZE_Y-PLAYER_SIZE_Y+PLAYER_IMAGE_EDGE)
-        if self.explode_timer < PLAYER_EXPLODE_TIMER:
+        if self.hp <= 0:
+            if self.explode_timer == PLAYER_EXPLODE_TIMER:
+                pygame.event.post(pygame.event.Event(PLAYER_EXPLODE_EVENT))
             self.explode()
 
     def fire(self):

@@ -10,7 +10,8 @@ GAME_OVER_EVENT = pygame.USEREVENT + 1
 ENEMY_SMALL_EXPLODE_EVENT = pygame.USEREVENT + 2
 ENEMY_MEDIUM_EXPLODE_EVENT = pygame.USEREVENT + 3
 ENEMY_LARGE_EXPLODE_EVENT = pygame.USEREVENT + 4
-PLAYER_SHOOT_EVENT = pygame.USEREVENT + 5
+PLAYER_EXPLODE_EVENT = pygame.USEREVENT + 5
+PLAYER_SHOOT_EVENT = pygame.USEREVENT + 6
 
 # Increase level based on time playing
 LEVEL_UP = 20000
@@ -145,7 +146,18 @@ BASIC_ATTACK = 1
 # Supplies
 
 # Bomb
-BOMB_IMAGE_PATH = "./images/ui_remain_bomb.png"
+BOMB_MAX_NUM = 9
+
+BOMB_SIZE_X = 62
+BOMB_SIZE_Y = 56
+
+BOMB_POSITION_X = BACKGROUND_SIZE_X - BOMB_SIZE_X - 80
+BOMB_POSITION_Y = BACKGROUND_SIZE_Y - BOMB_SIZE_Y - 20
+
+BOMB_IMAGE_PATH = [
+    "./images/ui_remain_bomb_1.png",
+    "./images/ui_remain_bomb_2.png",
+]
 
 
 # Sound
@@ -157,7 +169,13 @@ SE = {
     "ENEMY_SMALL_EXPLODE_SOUND": "./sounds/se_enemy_small_explode.wav",
     "ENEMY_MEDIUM_EXPLODE_SOUND": "./sounds/se_enemy_medium_explode.wav",
     "ENEMY_LARGE_EXPLODE_SOUND": "./sounds/se_enemy_large_explode.wav",
-    "PLAYER_SHOOT_SOUND": "./sounds/se_player_shoot.wav"
+    "PLAYER_EXPLODE_SOUND": "./sounds/se_enemy_medium_explode.wav",
+    "PLAYER_SHOOT_SOUND": "./sounds/se_player_shoot.wav",
     # "GET_SUPPLY_SOUND": "./sounds/se_get_supply.mp3",
 }
 
+
+# Font
+
+BOMB_FONT = "./fonts/Good_Morning.ttf"
+BOMB_FONT_SIZE = 25
