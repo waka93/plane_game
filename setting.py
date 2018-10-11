@@ -12,6 +12,7 @@ ENEMY_MEDIUM_EXPLODE_EVENT = pygame.USEREVENT + 3
 ENEMY_LARGE_EXPLODE_EVENT = pygame.USEREVENT + 4
 PLAYER_EXPLODE_EVENT = pygame.USEREVENT + 5
 PLAYER_SHOOT_EVENT = pygame.USEREVENT + 6
+BGM_END_EVENT = pygame.USEREVENT + 7
 
 # Increase level based on time playing
 LEVEL_UP = 20000
@@ -162,7 +163,13 @@ BOMB_IMAGE_PATH = [
 
 # Sound
 
+# BGM
+
+BGM_1 = "./sounds/bgm_1.wav"
+BGM_VOLUME = .2
+
 # SE
+
 PLAYER_SHOOT_SE_VOLUME = .2
 
 SE = {

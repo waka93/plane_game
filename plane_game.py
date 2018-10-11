@@ -11,7 +11,7 @@ from enemy_small import EnemySmall
 from enemy_medium import EnemyMedium
 from enemy_large import EnemyLarge
 from bomb import Bomb
-
+from background_music import BGM
 
 class PlaneGame:
     # Basic frames
@@ -32,6 +32,7 @@ class PlaneGame:
 
     # Sounds
     __se = dict()
+    __bgm = None
 
     # Text
     __bomb_text = None
@@ -46,6 +47,9 @@ class PlaneGame:
         self.__clock = pygame.time.Clock()
         self.__create_sprites()
         self.__load_sound()
+        self.__bgm = BGM()
+        BGM.play()
+        BGM.set_endevent(BGM_END_EVENT)
         pygame.time.set_timer(CREATE_ENEMY_EVENT, ENEMY_OCCUR_INTERVAL)
 
     def __create_sprites(self):
@@ -112,6 +116,11 @@ class PlaneGame:
                 else:
                     # todo add sound effect
                     pass
+
+            # BGM over
+            elif event.type == BGM_END_EVENT:
+                BGM.rewind()
+                BGM.play()
 
             # Game over
             elif event.type == GAME_OVER_EVENT:
