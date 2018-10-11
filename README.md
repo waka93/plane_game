@@ -1,1 +1,1 @@
-# plane_game
+# A mini plane game based on pygame
