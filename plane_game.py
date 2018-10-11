@@ -1,4 +1,5 @@
 import random
+import os
 
 import pygame
 from pygame.locals import *
@@ -28,10 +29,15 @@ class PlaneGame:
     # Supplies
     __bomb = None
 
+    # Sounds
+    __se = dict()
+
     def __init__(self):
         self.__screen = pygame.display.set_mode((BACKGROUND_SIZE_X, BACKGROUND_SIZE_Y))
+        pygame.mixer.init()
         self.__clock = pygame.time.Clock()
         self.__create_sprites()
+        self.__load_sound()
         pygame.time.set_timer(CREATE_ENEMY_EVENT, ENEMY_OCCUR_INTERVAL)
 
     def __create_sprites(self):
@@ -51,8 +57,16 @@ class PlaneGame:
         # Create bomb sprite
         self.__bomb = Bomb()
 
+    def __load_sound(self):
+        self.__load_se()
+
+    def __load_se(self):
+        for key, path in SE.items():
+            self.__se[key] = pygame.mixer.Sound(path)
+
     def __event_handler(self):
         for event in pygame.event.get():
+            # Quit game
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 exit()
@@ -78,14 +92,28 @@ class PlaneGame:
                         self.__enemy_count[1] = 0
                         self.__enemy_count[2] += 1
 
+            # Use bomb
             elif event.type == KEYDOWN and event.key == K_b:
                 self.__enemy_missile_group.empty()
                 for sprite in self.__enemy_group.sprites():
                     sprite.hp = 0
 
+            # Game over
             elif event.type == GAME_OVER_EVENT:
-                self.__create_sprites()
+                self.__player = Player(PLAYER_IMAGE_PATH_STAY, speed=PLAYER_SPEED)
+                self.__player_group = pygame.sprite.Group(self.__player)
                 self.start_game()
+
+            # Play explode sound effect
+            elif event.type == ENEMY_SMALL_EXPLODE_EVENT:
+                self.__se["ENEMY_SMALL_EXPLODE_SOUND"].play()
+            elif event.type == ENEMY_MEDIUM_EXPLODE_EVENT:
+                self.__se["ENEMY_MEDIUM_EXPLODE_SOUND"].play()
+            elif event.type == ENEMY_LARGE_EXPLODE_EVENT:
+                self.__se["ENEMY_LARGE_EXPLODE_SOUND"].play()
+            elif event.type == PLAYER_SHOOT_EVENT:
+                self.__se["PLAYER_SHOOT_SOUND"].set_volume(PLAYER_SHOOT_SE_VOLUME)
+                self.__se["PLAYER_SHOOT_SOUND"].play()
 
         key_pressed = pygame.key.get_pressed()
 

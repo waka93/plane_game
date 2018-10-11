@@ -27,6 +27,8 @@ class EnemySmall(Enemy):
     def update(self, *args):
         super().update()
         if self.hp <= 0:
+            if self.explode_timer == ENEMY_EXPLODE_TIMER:
+                pygame.event.post(pygame.event.Event(ENEMY_SMALL_EXPLODE_EVENT))
             self.explode()
 
     def fire(self):

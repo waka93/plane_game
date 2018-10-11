@@ -7,7 +7,10 @@ FPS = 60
 ENEMY_OCCUR_INTERVAL = 1000
 CREATE_ENEMY_EVENT = pygame.USEREVENT
 GAME_OVER_EVENT = pygame.USEREVENT + 1
-AIRCRAFT_EXPLODE_EVENT = pygame.USEREVENT + 2
+ENEMY_SMALL_EXPLODE_EVENT = pygame.USEREVENT + 2
+ENEMY_MEDIUM_EXPLODE_EVENT = pygame.USEREVENT + 3
+ENEMY_LARGE_EXPLODE_EVENT = pygame.USEREVENT + 4
+PLAYER_SHOOT_EVENT = pygame.USEREVENT + 5
 
 # Increase level based on time playing
 LEVEL_UP = 20000
@@ -47,12 +50,13 @@ PLAYER_FIRE_COOL_DOWN = 20
 
 PLAYER_EXPLODE_TIMER = 20
 
+PLAYER_HP = 4
 
 # Enemy info
 
 ENEMY_EXPLODE_TIMER = 20
-ENEMY_SMALL_SPAWN = 30
-ENEMY_MEDIUM_SPAWN = 5
+ENEMY_SMALL_SPAWN = 10
+ENEMY_MEDIUM_SPAWN = 2
 
 # Small enemy
 ENEMY_SMALL_SIZE_X = 64
@@ -142,3 +146,18 @@ BASIC_ATTACK = 1
 
 # Bomb
 BOMB_IMAGE_PATH = "./images/ui_remain_bomb.png"
+
+
+# Sound
+
+# SE
+PLAYER_SHOOT_SE_VOLUME = .2
+
+SE = {
+    "ENEMY_SMALL_EXPLODE_SOUND": "./sounds/se_enemy_small_explode.wav",
+    "ENEMY_MEDIUM_EXPLODE_SOUND": "./sounds/se_enemy_medium_explode.wav",
+    "ENEMY_LARGE_EXPLODE_SOUND": "./sounds/se_enemy_large_explode.wav",
+    "PLAYER_SHOOT_SOUND": "./sounds/se_player_shoot.wav"
+    # "GET_SUPPLY_SOUND": "./sounds/se_get_supply.mp3",
+}
+

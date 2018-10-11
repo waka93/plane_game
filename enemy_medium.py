@@ -29,6 +29,8 @@ class EnemyMedium(Enemy):
     def update(self, *args):
         super().update()
         if self.hp <= 0:
+            if self.explode_timer == ENEMY_EXPLODE_TIMER:
+                pygame.event.post(pygame.event.Event(ENEMY_MEDIUM_EXPLODE_EVENT))
             self.explode()
         else:
             self.image = self.image_group["idle"][len(ENEMY_MEDIUM_IMAGE_PATH_IDLE)-1-int((self.hp-.5)/(ENEMY_MEDIUM_HP//len(ENEMY_MEDIUM_IMAGE_PATH_IDLE)))]

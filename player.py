@@ -21,6 +21,7 @@ class Player(GameSprite):
         self.fire_cool_down = PLAYER_FIRE_COOL_DOWN
         self.cool_down_timer = 0
         self.explode_timer = PLAYER_EXPLODE_TIMER
+        self.hp = PLAYER_HP
 
     def update(self, *args):
         if self.direction[0] != 0 or self.direction[1] != 0:
@@ -38,6 +39,7 @@ class Player(GameSprite):
 
     def fire(self):
         if self.cool_down_timer <= 0:
+            pygame.event.post(pygame.event.Event(PLAYER_SHOOT_EVENT))
             m = Missile()
             m.rect.centerx = self.rect.centerx
             m.rect.y = self.rect.top - MISSILE_SIZE_Y//2
