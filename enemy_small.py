@@ -34,10 +34,11 @@ class EnemySmall(Enemy):
     def fire(self):
         trigger = random.randint(1, 100)
         if trigger <= ENEMY_SMALL_FIRE_CHANCE and self.cool_down_timer <= 0:
+            pygame.event.post(pygame.event.Event(ENEMY_SHOOT_EVENT))
             missile = Missile()
             missile.speed = MISSILE_SPEED
             missile.rect.centerx = self.rect.centerx
-            missile.rect.y = self.rect.bottom + ENEMY_SMALL_SIZE_Y//2
+            missile.rect.y = self.rect.bottom - ENEMY_SMALL_SIZE_Y//2
             self.missile_group.add(missile)
             self.cool_down_timer = self.fire_cool_down
             return missile

@@ -11,8 +11,9 @@ ENEMY_SMALL_EXPLODE_EVENT = pygame.USEREVENT + 2
 ENEMY_MEDIUM_EXPLODE_EVENT = pygame.USEREVENT + 3
 ENEMY_LARGE_EXPLODE_EVENT = pygame.USEREVENT + 4
 PLAYER_EXPLODE_EVENT = pygame.USEREVENT + 5
-PLAYER_SHOOT_EVENT = pygame.USEREVENT + 6
-BGM_END_EVENT = pygame.USEREVENT + 7
+ENEMY_SHOOT_EVENT = pygame.USEREVENT + 6
+PLAYER_SHOOT_EVENT = pygame.USEREVENT + 7
+BGM_END_EVENT = pygame.USEREVENT + 8
 
 # Increase level based on time playing
 LEVEL_UP = 20000
@@ -160,6 +161,17 @@ BOMB_IMAGE_PATH = [
     "./images/ui_remain_bomb_2.png",
 ]
 
+BOMB_SUPPLY_SIZE_X = 61
+BOMB_SUPPLY_SIZE_Y = 103
+
+BOMB_IMAGE_PATH_SUPPLY = "./images/supply_bomb.png"
+
+# Missile
+
+MISSILE_SUPPLY_SIZE_X = 58
+MISSILE_SUPPLY_SIZE_Y = 87
+
+MISSILE_IMAGE_PATH_SUPPLY = "./images/supply_double_missile.png"
 
 # Sound
 
@@ -171,6 +183,7 @@ BGM_VOLUME = .2
 # SE
 
 PLAYER_SHOOT_SE_VOLUME = .2
+ENEMY_SHOOT_SE_VOLUME = .2
 
 SE = {
     "ENEMY_SMALL_EXPLODE_SOUND": "./sounds/se_enemy_small_explode.wav",
@@ -178,7 +191,8 @@ SE = {
     "ENEMY_LARGE_EXPLODE_SOUND": "./sounds/se_enemy_large_explode.wav",
     "PLAYER_EXPLODE_SOUND": "./sounds/se_enemy_medium_explode.wav",
     "PLAYER_SHOOT_SOUND": "./sounds/se_player_shoot.wav",
-    # "GET_SUPPLY_SOUND": "./sounds/se_get_supply.mp3",
+    "ENEMY_SHOOT_SOUND": "./sounds/se_enemy_shoot.wav",
+    "GET_SUPPLY_SOUND": "./sounds/se_get_supply.wav",
 }
 
 

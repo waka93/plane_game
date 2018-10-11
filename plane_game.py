@@ -128,7 +128,7 @@ class PlaneGame:
                 self.__player_group = pygame.sprite.Group(self.__player)
                 self.start_game()
 
-            # Play explode sound effect
+            # Play explode and fire sound effect
             elif event.type == ENEMY_SMALL_EXPLODE_EVENT:
                 self.__se["ENEMY_SMALL_EXPLODE_SOUND"].play()
             elif event.type == ENEMY_MEDIUM_EXPLODE_EVENT:
@@ -137,6 +137,9 @@ class PlaneGame:
                 self.__se["ENEMY_LARGE_EXPLODE_SOUND"].play()
             elif event.type == PLAYER_EXPLODE_EVENT:
                 self.__se["PLAYER_EXPLODE_SOUND"].play()
+            elif event.type == ENEMY_SHOOT_EVENT:
+                self.__se["ENEMY_SHOOT_SOUND"].set_volume(ENEMY_SHOOT_SE_VOLUME)
+                self.__se["ENEMY_SHOOT_SOUND"].play()
             elif event.type == PLAYER_SHOOT_EVENT:
                 self.__se["PLAYER_SHOOT_SOUND"].set_volume(PLAYER_SHOOT_SE_VOLUME)
                 self.__se["PLAYER_SHOOT_SOUND"].play()
