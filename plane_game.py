@@ -12,6 +12,8 @@ from enemy_medium import EnemyMedium
 from enemy_large import EnemyLarge
 from bomb import Bomb
 from background_music import BGM
+from supply_bomb import BombSupply
+
 
 class PlaneGame:
     # Basic frames
@@ -29,6 +31,8 @@ class PlaneGame:
     # Supplies
     __bomb = None
     __bomb_group = None
+    __bomb_supply = None
+    __bomb_supply_group = None
 
     # Sounds
     __se = dict()
@@ -51,6 +55,8 @@ class PlaneGame:
         BGM.play()
         BGM.set_endevent(BGM_END_EVENT)
         pygame.time.set_timer(CREATE_ENEMY_EVENT, ENEMY_OCCUR_INTERVAL)
+        pygame.time.set_timer(BOMB_SUPPLY_EVENT, BOMB_SUPPLY_OCCUR_INTERVAL)
+        pygame.time.set_timer(MISSILE_SUPPLY_EVENT, MISSILE_SUPPLY_OCCUR_INTERVAL)
 
     def __create_sprites(self):
         # Create background sprite group
@@ -70,6 +76,9 @@ class PlaneGame:
         self.__bomb = Bomb()
         self.__bomb_text = self.__bomb.get_text()
         self.__bomb_group = pygame.sprite.Group(self.__bomb)
+
+        # Create bomb supply group
+        self.__bomb_supply_group = pygame.sprite.Group()
 
     def __load_sound(self):
         self.__load_se()
@@ -105,6 +114,16 @@ class PlaneGame:
                         self.__enemy_group.add(enemy_large)
                         self.__enemy_count[1] = 0
                         self.__enemy_count[2] += 1
+
+            # Create bomb supply
+            elif event.type == BOMB_SUPPLY_EVENT:
+                bomb_supply = BombSupply()
+                self.__bomb_supply_group.add(bomb_supply)
+
+            # Create missile supply
+            elif event.type == MISSILE_SUPPLY_EVENT:
+                # todo
+                pass
 
             # Use bomb
             elif event.type == KEYDOWN and event.key == K_b:
@@ -199,6 +218,14 @@ class PlaneGame:
                 self.__player.hp -= missile.attack
                 missile.kill()
 
+        # Check if player get a supply
+        # Bomb supply
+        for bomb_supply in self.__bomb_supply_group.sprites():
+            bomb_supply_mask = pygame.mask.from_surface(bomb_supply.image)
+            if bomb_supply_mask.overlap(player_mask, (self.__player.rect.x-bomb_supply.rect.x, self.__player.rect.y-bomb_supply.rect.y)):
+                self.__bomb.add()
+                bomb_supply.kill()
+
     def __update_sprites(self):
         # Update background
         self.__background_group.update()
@@ -223,6 +250,13 @@ class PlaneGame:
         # Update player aircraft
         self.__player_group.update()
         self.__player_group.draw(self.__screen)
+
+        # Update bomb supply
+        self.__bomb_supply_group.update()
+        self.__bomb_supply_group.draw(self.__screen)
+
+        # Update missile supply
+        # todo
 
         # Update remaining bombs
         self.__bomb_group.update()
