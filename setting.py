@@ -17,13 +17,14 @@ ENEMY_SHOOT_EVENT = pygame.USEREVENT + 6
 PLAYER_SHOOT_EVENT = pygame.USEREVENT + 7
 BGM_END_EVENT = pygame.USEREVENT + 8
 
-BOMB_SUPPLY_OCCUR_INTERVAL = 10000
+BOMB_SUPPLY_OCCUR_INTERVAL = 12000
 BOMB_SUPPLY_EVENT = pygame.USEREVENT - 1
-MISSILE_SUPPLY_OCCUR_INTERVAL = 20000
+MISSILE_SUPPLY_OCCUR_INTERVAL = 21000
 MISSILE_SUPPLY_EVENT = pygame.USEREVENT - 2
 
 # Increase level based on time playing
 LEVEL_UP = 20000
+
 
 # Background info
 BACKGROUND_POSITION_X = 0
@@ -61,6 +62,7 @@ PLAYER_FIRE_COOL_DOWN = 20
 PLAYER_EXPLODE_TIMER = 20
 
 PLAYER_HP = 4
+PLAYER_ATTACK = 1
 
 # Enemy info
 
@@ -145,7 +147,11 @@ ENEMY_LARGE_FIRE_CHANCE = 60
 MISSILE_SIZE_X = 9
 MISSILE_SIZE_Y = 21
 
-MISSILE_IMAGE_PATH = "./images/missile_1.png"
+MISSILE_IMAGE_PATH = [
+    "./images/missile_1.png",
+    "./images/missile_2.png",
+    "./images/missile_3.png",
+]
 
 MISSILE_SPEED = 10
 
@@ -182,6 +188,8 @@ MISSILE_SUPPLY_SIZE_Y = 87
 
 MISSILE_IMAGE_PATH_SUPPLY = "./images/supply_double_missile.png"
 
+MISSILE_SUPPLY_SPEED = 6
+
 # Sound
 
 # BGM
@@ -202,6 +210,7 @@ SE = {
     "PLAYER_SHOOT_SOUND": "./sounds/se_player_shoot.wav",
     "ENEMY_SHOOT_SOUND": "./sounds/se_enemy_shoot.wav",
     "GET_SUPPLY_SOUND": "./sounds/se_get_supply.wav",
+    "BOMB_EXHAUST_SOUND": "./sounds/se_bomb_exhaust.wav",
 }
 
 

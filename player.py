@@ -22,8 +22,11 @@ class Player(GameSprite):
         self.cool_down_timer = 0
         self.explode_timer = PLAYER_EXPLODE_TIMER
         self.hp = PLAYER_HP
+        self.attack = PLAYER_ATTACK
+        self.missile_image = 0
 
     def update(self, *args):
+        # Move
         if self.direction[0] != 0 or self.direction[1] != 0:
             self.image = self.image_group["move"]
         else:
@@ -34,6 +37,17 @@ class Player(GameSprite):
         self.rect.y -= self.direction[1] * self.speed
         self.rect.y = max(self.rect.y, 0-PLAYER_IMAGE_EDGE)
         self.rect.y = min(self.rect.y, BACKGROUND_SIZE_Y-PLAYER_SIZE_Y+PLAYER_IMAGE_EDGE)
+
+        # Attack level up
+        if self.attack == 2:
+            self.fire_cool_down = PLAYER_FIRE_COOL_DOWN//2
+            self.missile_image = 1
+        elif self.attack >= 3:
+            self.fire_cool_down = PLAYER_FIRE_COOL_DOWN//4
+            self.missile_image = 2
+            self.attack = 3
+
+        # Explode
         if self.hp <= 0:
             if self.explode_timer == PLAYER_EXPLODE_TIMER:
                 pygame.event.post(pygame.event.Event(PLAYER_EXPLODE_EVENT))
@@ -42,9 +56,11 @@ class Player(GameSprite):
     def fire(self):
         if self.cool_down_timer <= 0:
             pygame.event.post(pygame.event.Event(PLAYER_SHOOT_EVENT))
-            m = Missile()
+            m = Missile(MISSILE_IMAGE_PATH[self.missile_image])
             m.rect.centerx = self.rect.centerx
             m.rect.y = self.rect.top - MISSILE_SIZE_Y//2
+            if self.attack >= 3:
+                m.attack = BASIC_ATTACK + 1
             self.missile_group.add(m)
             self.cool_down_timer = self.fire_cool_down
             return m

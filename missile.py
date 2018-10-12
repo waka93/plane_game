@@ -4,8 +4,8 @@ from setting import *
 
 class Missile(GameSprite):
 
-    def __init__(self):
-        super().__init__(MISSILE_IMAGE_PATH, speed=-MISSILE_SPEED)
+    def __init__(self, path):
+        super().__init__(path, speed=-MISSILE_SPEED)
         self.attack = BASIC_ATTACK
 
     def update(self, *args):

@@ -13,6 +13,7 @@ from enemy_large import EnemyLarge
 from bomb import Bomb
 from background_music import BGM
 from supply_bomb import BombSupply
+from supply_missile import MissileSupply
 
 
 class PlaneGame:
@@ -31,8 +32,8 @@ class PlaneGame:
     # Supplies
     __bomb = None
     __bomb_group = None
-    __bomb_supply = None
     __bomb_supply_group = None
+    __missile_supply_group = None
 
     # Sounds
     __se = dict()
@@ -80,6 +81,9 @@ class PlaneGame:
         # Create bomb supply group
         self.__bomb_supply_group = pygame.sprite.Group()
 
+        # Create missile supply group
+        self.__missile_supply_group = pygame.sprite.Group()
+
     def __load_sound(self):
         self.__load_se()
 
@@ -122,8 +126,8 @@ class PlaneGame:
 
             # Create missile supply
             elif event.type == MISSILE_SUPPLY_EVENT:
-                # todo
-                pass
+                missile_supply = MissileSupply()
+                self.__missile_supply_group.add(missile_supply)
 
             # Use bomb
             elif event.type == KEYDOWN and event.key == K_b:
@@ -133,7 +137,7 @@ class PlaneGame:
                         sprite.hp = 0
                     self.__bomb.subtract()
                 else:
-                    # todo add sound effect
+                    self.__se["BOMB_EXHAUST_SOUND"].play()
                     pass
 
             # BGM over
@@ -224,7 +228,15 @@ class PlaneGame:
             bomb_supply_mask = pygame.mask.from_surface(bomb_supply.image)
             if bomb_supply_mask.overlap(player_mask, (self.__player.rect.x-bomb_supply.rect.x, self.__player.rect.y-bomb_supply.rect.y)):
                 self.__bomb.add()
+                self.__se["GET_SUPPLY_SOUND"].play()
                 bomb_supply.kill()
+        # Missile supply
+        for missile_supply in self.__missile_supply_group.sprites():
+            missile_supply_mask = pygame.mask.from_surface(missile_supply.image)
+            if missile_supply_mask.overlap(player_mask, (self.__player.rect.x-missile_supply.rect.x, self.__player.rect.y-missile_supply.rect.y)):
+                self.__player.attack += 1
+                self.__se["GET_SUPPLY_SOUND"].play()
+                missile_supply.kill()
 
     def __update_sprites(self):
         # Update background
@@ -256,7 +268,8 @@ class PlaneGame:
         self.__bomb_supply_group.draw(self.__screen)
 
         # Update missile supply
-        # todo
+        self.__missile_supply_group.update()
+        self.__missile_supply_group.draw(self.__screen)
 
         # Update remaining bombs
         self.__bomb_group.update()
