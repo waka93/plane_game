@@ -43,7 +43,7 @@ class Player(GameSprite):
             self.fire_cool_down = PLAYER_FIRE_COOL_DOWN//2
             self.missile_image = 1
         elif self.attack >= 3:
-            self.fire_cool_down = PLAYER_FIRE_COOL_DOWN//4
+            self.fire_cool_down = PLAYER_FIRE_COOL_DOWN//3
             self.missile_image = 2
             self.attack = 3
 
